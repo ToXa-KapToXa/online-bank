@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Регистрация</title>
+</head>
+<body>
+    <a href="/login">Я уже зарегистрирован(а)</a>
+    <div th:if="${message}" style="color: red">
+        [[${message}]]
+    </div>
+    <div th:if="${param.success}">
+        <div style="color: green">Вы успешно зарегистрировались!</div>
+    </div>
+    <form th:action="@{/registration}" method="post" th:object="${tempRegistration}">
+        <div><label> Номер карты: <input type="text" th:field="*{cardNumber}"/> </label></div>
+        <div><label> Пароль: <input type="password" th:field="*{password}"/> </label></div>
+        <div><input type="submit" value="Зарегистрироваться"/></div>
+    </form>
+</body>
+</html>

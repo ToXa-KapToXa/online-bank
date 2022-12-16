@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная</title>
+</head>
+<body>
+<form th:method="get" th:action="@{/client/transaction}">
+    <div><input type="submit" value="Перевод"/></div>
+</form>
+<h2>Карты</h2>
+<div th:each = "card : ${cards}" style="border: 2px dashed; padding: 10px;" th:if="${card.getActive() == 'true'}">
+    <span>Номер: </span>
+    <span th:text="${card.getNumber()}"></span>
+    <br>
+    <br>
+    <span th:text="${card.getMoney()}"></span>
+    <span>  ₽</span>
+    <br>
+    <br>
+    <form th:method="put" th:action="@{/client/cards/{id}/block (id = ${card.getId()})}"  th:object="${card}">
+        <div><input type="submit" value="Заблокировать" th:field="*{id}"/></div>
+    </form>
+    <br>
+</div>
+<h2>Счета</h2>
+<div th:each = "account : ${accounts}" th:if="${account.getActive() == 'true'}" style="border: 2px dashed; padding: 10px;">
+    <span>Название: </span>
+    <span th:text="${account.getName()}"></span>
+    <br>
+    <span>Процент: </span>
+    <span th:text="${account.getAccountType().getPercent()}"></span>
+    <br>
+    <br>
+    <span th:text="${account.getMoney()}"></span>
+    <span>  ₽</span>
+    <br>
+    <br>
+    <form th:method="put" th:action="@{/client/account/{id}/block (id = ${account.getId()})}" th:object="${account}">
+        <div><input type="submit" value="Закрыть счёт" th:field="*{id}"/></div>
+    </form>
+    <br>
+</div>
+</body>
+</html>

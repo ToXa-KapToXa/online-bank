@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Карты</title>
+</head>
+<body>
+<a href="/admin">Главная</a>
+<br>
+<h2>Карты</h2>
+<span th:text="${client.getLastname()}"> </span>
+<span th:text="${client.getFirstname()}"> </span>
+<span th:text="${client.getMiddlename()}"> </span>
+<form enctype="multipart/form-data" th:action="@{/admin/clients/{id}/cards/find_by_number (id = ${client.getId()})}" method="get" th:object="${findByNumber}">
+    <label>Номер карты: <input type="text" th:field="*{cardNumber}"/></label>
+    <br>
+    <div><input type="submit" value="Поиск"/></div>
+</form>
+<div th:each = "card : ${client.getCards()}" style="border: 2px dashed; padding: 10px;">
+    <span>Номер карты: </span>
+    <span th:text="${card.getNumber()}"></span>
+    <br>
+    <span>Действительна до: </span>
+    <span th:text="${card.getValidDate()}"></span>
+    <form th:method="get" th:action="@{/admin/cards/{id}/top_up (id = ${card.getId()})}">
+        <div><input type="submit" value="Пополнить"/></div>
+    </form>
+    <form th:method="put" th:action="@{/admin/cards/{id}/block (id = ${card.getId()})}" th:if="${card.getActive() == 'true'}">
+        <div><input type="submit" value="Заблокировать" th:field="*{id}"/></div>
+    </form>
+
+    <form th:method="put" th:action="@{/admin/cards/{id}/unblock (id = ${card.getId()})}" th:if="${card.getActive() == 'false'}">
+        <div><input type="submit" value="Разблокировать" th:field="*{id}"/></div>
+    </form>
+    <br>
+</div>
+<form th:method="get" th:action="@{/admin/clients/{id}/cards/add_card (id = ${client.getId()})}">
+    <div><input type="submit" value="Добавить карту"/></div>
+</form>
+</body>
+</html>
